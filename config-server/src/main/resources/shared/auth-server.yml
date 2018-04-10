@@ -1,0 +1,70 @@
+spring:
+  profiles: default
+  datasource:
+    url: jdbc:mysql://comup.blogsite.xyz:3306/oauth2-db?useSSL=false
+    username: comup
+    password: cqyymx123
+    platform: mysql
+    initialize: true
+    schema: classpath:/scripts/schema.sql
+    data: classpath:/scripts/data.sql
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    #hibernate:
+      #ddl-auto: update
+    show-sql: true
+
+# Make the application available at http://localhost:9090/auth
+server:
+  port: 9090
+  contextPath: /auth
+      
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      registered-redirect-uri: http://localhost:8080
+    
+logging:
+  level:
+    org.springframework.security: debug
+    
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    
+---
+
+spring:
+  profiles: docker
+  datasource:
+    url: jdbc:mysql://oauth2:3306/oauth2-db?useSSL=false
+    username: oauth2-user
+    password: oauth2-password
+    platform: mysql
+    initialize: true
+    schema: classpath:/scripts/schema.sql
+    data: classpath:/scripts/data.sql
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    #hibernate:
+      #ddl-auto: update
+    show-sql: true
+
+# Make the application available at http://localhost:9090/auth
+server:
+  port: 9090
+  contextPath: /auth
+  
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      registered-redirect-uri: http://${DOMAIN_NAME:secure-ui}:8080
+    
+logging:
+  level:
+    org.springframework.security: info
